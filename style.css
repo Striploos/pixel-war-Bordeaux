@@ -1,0 +1,226 @@
+/* ─── VARIABLES MONOCHROMES ─── */
+:root {
+  --bg-dark: #050505;
+  --gray-900: #121212;
+  --gray-500: #757575;
+  --white: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--white);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  overflow-x: hidden; /* Empêche le défilement horizontal */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── CUBE 3D GÉANT (Arrière-plan) ─── */
+.cube-container {
+  position: fixed;
+  top: 0; left: 0; 
+  width: 100vw; height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  z-index: -1;
+  background: radial-gradient(circle at center, #111111 0%, var(--bg-dark) 80%);
+}
+
+.cube {
+  width: 90vmin; /* S'adapte à l'écran mobile et PC */
+  height: 90vmin;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spinCube 40s linear infinite;
+}
+
+.face {
+  position: absolute;
+  width: 100%; height: 100%;
+  background-color: rgba(10, 10, 10, 0.7); 
+  border: 1px solid var(--glass-border);
+  background-image: 
+      linear-gradient(var(--glass-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+  background-size: 5vmin 5vmin; 
+}
+
+.face.front  { transform: rotateY(0deg) translateZ(45vmin); }
+.face.back   { transform: rotateY(180deg) translateZ(45vmin); }
+.face.right  { transform: rotateY(90deg) translateZ(45vmin); }
+.face.left   { transform: rotateY(-90deg) translateZ(45vmin); }
+.face.top    { transform: rotateX(90deg) translateZ(45vmin); }
+.face.bottom { transform: rotateX(-90deg) translateZ(45vmin); }
+
+@keyframes spinCube {
+  0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  100% { transform: rotateX(360deg) rotateY(720deg) rotateZ(180deg); }
+}
+
+/* ─── EN-TÊTE ─── */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+header {
+  text-align: center;
+  padding: 10px 20px;
+  margin: 15px auto;
+  width: fit-content;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+header h1 { font-size: 16px; font-weight: 300; }
+header p { font-size: 9px; color: var(--gray-500); letter-spacing: 1px; margin-top: 3px; }
+
+/* ─── MISE EN PAGE MOBILE (Par défaut) ─── */
+.layout {
+  display: flex;
+  flex-direction: column; /* Éléments empilés sur mobile */
+  flex: 1;
+  padding: 10px;
+  gap: 20px;
+  align-items: center;
+}
+
+.control-panel {
+  display: flex;
+  flex-direction: row; /* Widgets alignés horizontalement */
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px; /* Limite la largeur sur tablette */
+}
+
+.widget {
+  flex: 1 1 30%; /* Prend environ 1/3 de la largeur */
+  min-width: 100px;
+}
+
+.widget h2 {
+  font-size: 9px;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 4px;
+}
+
+input[type="color"] {
+  width: 100%;
+  height: 35px; /* Plus grand pour le doigt */
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch { border: 1px solid var(--glass-border); border-radius: 8px; }
+
+.status-indicator { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
+.dot-ready { color: var(--white); background: var(--white); }
+.dot-wait { color: var(--gray-500); background: var(--gray-500); }
+.server-msg { font-size: 11px; line-height: 1.3; color: var(--gray-500); }
+
+/* ─── PLATEAU DE JEU (Adaptatif) ─── */
+.grille-wrapper {
+  perspective: 1200px; 
+  width: 95vw; /* Prend presque tout l'écran mobile */
+  max-width: 500px;
+}
+
+.grille-3d-container {
+  /* SUR MOBILE : Totalement plat pour appuyer avec le doigt sans erreur */
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 0 1px var(--glass-border);
+  border-radius: 4px;
+  background: var(--gray-900);
+}
+
+#grille {
+  display: grid;
+  gap: 0px; /* Enlevé sur mobile pour éviter que les lignes noires écrasent les pixels */
+  padding: 1px;
+  background: var(--glass-border);
+  aspect-ratio: 1 / 1; /* Force la grille à rester parfaitement carrée */
+}
+
+#grille div {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+}
+
+#grille div:active { /* Remplacement du hover par :active pour le tactile */
+  transform: scale(1.3); 
+  box-shadow: 0 0 10px rgba(255,255,255,0.7);
+  z-index: 10;
+  position: relative;
+}
+
+/* ─── MISE EN PAGE ORDINATEUR (> 768px) ─── */
+@media (min-width: 768px) {
+  
+  header { padding: 15px 30px; margin: 25px auto 10px auto; }
+  header h1 { font-size: 20px; }
+  header p { font-size: 10px; }
+
+  .layout {
+      flex-direction: row; /* Côte à côte */
+      padding: 20px;
+      gap: 50px;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .control-panel {
+      flex-direction: column; /* Widgets empilés à gauche */
+      width: 260px;
+      gap: 25px;
+      padding: 30px;
+  }
+
+  .widget h2 { font-size: 10px; margin-bottom: 12px; }
+  .status-indicator { font-size: 13px; }
+  .server-msg { font-size: 12px; }
+
+  .grille-wrapper { width: 60vmin; max-width: none; }
+  
+  #grille { gap: 1px; } /* Remet le gap stylé sur PC */
+
+  .grille-3d-container {
+      /* SUR ORDINATEUR : Reprend son effet penché en 3D ! */
+      transform: rotateX(30deg) rotateY(-20deg) rotateZ(10deg);
+      box-shadow: -30px 50px 60px rgba(0,0,0,0.9), 0 0 0 1px var(--glass-border);
+  }
+
+  /* Le survol 3D n'est activé que sur ordinateur */
+  .grille-wrapper:hover .grille-3d-container {
+      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.05);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.95), 0 0 0 1px var(--glass-border);
+  }
+
+  #grille div:hover {
+      transform: translateZ(15px) scale(1.3);
+      box-shadow: 0 15px 20px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255,255,255,0.7);
+      z-index: 10;
+      position: relative;
+  }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel War - Bordeaux</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    
+</head>
+<body>
+
+    <!-- Arrière-plan : Cube 3D Tournant -->
+    <div class="cube-container">
+        <div class="cube">
+            <div class="face front"></div>
+            <div class="face back"></div>
+            <div class="face right"></div>
+            <div class="face left"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
+        </div>
+    </div>
+
+    <!-- En-tête en Verre Fumé -->
+    <header class="glass-panel">
+        <h1>PIXEL WAR</h1>
+        <p>Édition IUT Bordeaux</p>
+    </header>
+
+    <div class="layout">
+        
+        <!-- Panneau de contrôle -->
+        <aside class="control-panel glass-panel">
+            <div class="widget">
+                <h2>Couleur</h2>
+                <input type="color" id="colorPicker" value="#ffffff"/>
+            </div>
+            
+            <div class="widget">
+                <h2>Statut</h2>
+                <div class="status-indicator">
+                    <div id="status-dot" class="dot dot-wait"></div>
+                    <span id="waitMsg">Vérification...</span>
+                </div>
+            </div>
+
+            <div class="widget">
+                <h2>Serveur</h2>
+                <span id="serverMsg" class="server-msg">En attente de connexion...</span>
+            </div>
+        </aside>
+
+        <!-- Plateau de jeu interactif 3D -->
+        <main class="grille-wrapper">
+            <div class="grille-3d-container">
+                <div id="grille"></div>
+            </div>
+        </main>
+
+    </div>
+</body>
+</html>
