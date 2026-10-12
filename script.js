@@ -2,7 +2,11 @@ let timeValite = true;
 
 const tab = async () => {
     try {
-        const response = await fetch("/tableau"); // Utilise l'URL relative
+        const response = await fetch("https://https://pixelwar-bordeaux.loca.lt/.loca.lt/tableau",{
+            headers: {
+                "Bypass-Tunnel-Reminder": "true" // Cette ligne magique saute l'écran de sécurité !
+            }
+        });
         let resultat = await response.json();
         
         const grille = document.getElementById("grille");
@@ -48,12 +52,15 @@ const colorierPixel = async (color, indexColonne, indexLigne, pixel) => {
     const formData = { color: color, col: indexColonne, row: indexLigne };
     
     try {
-        const response = await fetch("/modifier-case", {
-            method : 'PUT', 
-            headers : { 'Content-Type': 'application/json'},
-            body : JSON.stringify(formData)
+        const response = await fetch("https://https://pixelwar-bordeaux.loca.lt/.loca.lt/modifier-case", {
+            method: 'PUT', 
+            headers: { 
+                'Content-Type': 'application/json',
+                'Bypass-Tunnel-Reminder': 'true'
+            },
+            body: JSON.stringify(formData)
         });
-        
+                
         const data = await response.json();
         
         if(response.ok){
@@ -75,7 +82,11 @@ const tmp = async () => {
     const dot = document.getElementById("status-dot");
     
     try {
-        const response = await fetch("/temps-attente");
+        const response = await fetch("https://https://pixelwar-bordeaux.loca.lt//temps-attente",{
+            headers: {
+                "Bypass-Tunnel-Reminder": "true" // Cette ligne magique saute l'écran de sécurité !
+            }
+        });
         const data = await response.json();
         const time = Math.ceil(data.tempsAttente / 1000);
         
