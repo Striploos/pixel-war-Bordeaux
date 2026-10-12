@@ -65,3 +65,5 @@ npx cloudflared tunnel --url http://localhost:3000
 
 ---
 *Vibe coded with ❤️ and AI.*
+
+*Liens : https://pixelwar-bordeaux.loca.lt/*
